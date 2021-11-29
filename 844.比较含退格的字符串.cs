@@ -9,35 +9,59 @@ public class Solution
 {
     public bool BackspaceCompare(string s, string t)
     {
-        if (ProcessString(s) == ProcessString(t))
+        int sl = s.Length - 1, tl = t.Length - 1;
+        int sSkip = 0, tSkip = 0;
+        while (sl >= 0 || tl >= 0)
         {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    private string ProcessString(string str)
-    {
-        for (int i = 0; i < str.Length; i++)
-        {
-            if (str[i] == '#')
+            while (sl >= 0)
             {
-                if (i == 0)
+                if (s[sl] == '#')
                 {
-                    str = str.Remove(0, 1);
-                    i--;
+                    sSkip++;
+                    sl--;
+                }
+                else if (sSkip > 0)
+                {
+                    sSkip--;
+                    sl--;
                 }
                 else
                 {
-                    str = str.Remove(i - 1, 2);
-                    i = i - 2;
+                    break;
                 }
             }
+            while (tl >= 0)
+            {
+                if (t[tl] == '#')
+                {
+                    tSkip++;
+                    tl--;
+                }
+                else if (tSkip > 0)
+                {
+                    tSkip--;
+                    tl--;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            if (sl >= 0 && tl >= 0)
+            {
+                if (t[tl] != s[sl])
+                {
+                    return false;
+                }
+            }
+            else if (sl >= 0 || tl >= 0)
+            {
+                return false;
+            }
+            sl--;
+            tl--;
         }
-        return str;
+        return true;
     }
 }
 // @lc code=end
