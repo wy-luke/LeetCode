@@ -1,71 +1,3 @@
-public class Solution
-{
-
-    public int Calculate(string s)
-    {
-        // 记录数字
-        Stack<string> numbers = new Stack<string>();
-        // 记录符号
-        Stack<char> symbols = new Stack<char>();
-        // 记录符号的数量，用以判断多位数结束
-        int symbolCount = -1;
-        // 记录数字的数量，用以判断多位数结束
-        int numberCount = 0;
-        int m, n;
-        for (int i = 0; i < s.Length; i++)
-        {
-            if (s[i] == ' ')
-            {
-                continue;
-            }
-
-            if (s[i] == '+' || s[i] == '-')
-            {
-                if (numberCount != 0)
-                {
-                    n = Int32.Parse(numbers.Pop());
-                    m = Int32.Parse(numbers.Pop());
-                    if (symbols.Pop() == '+')
-                    {
-                        numbers.Push((m + n).ToString());
-                    }
-                    else
-                    {
-                        numbers.Push((m + n).ToString());
-                    }
-                }
-
-                symbols.Push(s[i]);
-            }
-            else
-            {
-                if (symbolCount == symbols.Count)
-                {
-
-                }
-                else
-                {
-                    numbers.Push(s[i].ToString());
-                    symbolCount = symbols.Count;
-                }
-            }
-
-        }
-        n = Int32.Parse(numbers.Pop());
-        m = Int32.Parse(numbers.Pop());
-        if (symbols.Pop() == '+')
-        {
-            numbers.Push((m + n).ToString());
-        }
-        else
-        {
-            numbers.Push((m + n).ToString());
-        }
-        return Int32.Parse(numbers.Pop());
-    }
-}
-// @lc code=end
-
 /*
  * @lc app=leetcode.cn id=224 lang=csharp
  *
@@ -73,4 +5,62 @@ public class Solution
  */
 
 // @lc code=start
+public class Solution
+{
+    private int i = 0;
+
+    public int Calculate(string s)
+    {
+        Stack<int> stk = new Stack<int>();
+        int num = 0;
+        char sign = '+';
+
+        for (; i < s.Length; ++i)
+        {
+            if (Char.IsDigit(s[i]))
+            {
+                num = num * 10 + (s[i] - '0');
+            }
+            if (s[i] == '(')
+            {
+                ++i;
+                num = Calculate(s);
+            }
+            if ((!Char.IsDigit(s[i]) && s[i] != ' ') || i == s.Length - 1)
+            {
+                switch (sign)
+                {
+                    case '+':
+                        stk.Push(num);
+                        break;
+                    case '-':
+                        stk.Push(-num);
+                        break;
+                    case '*':
+                        stk.Push(stk.Pop() * num);
+                        break;
+                    case '/':
+                        stk.Push(stk.Pop() / num);
+                        break;
+                }
+
+                num = 0;
+                sign = s[i];
+            }
+            if (s[i] == ')')
+            {
+                if (i != s.Length - 1) ++i;
+                break;
+            }
+        }
+
+        int res = 0;
+        while (stk.Count != 0)
+        {
+            res += stk.Pop();
+        }
+        return res;
+    }
+}
+// @lc code=end
 
