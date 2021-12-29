@@ -20,7 +20,7 @@ public class Solution
 {
     public ListNode MergeKLists(ListNode[] lists)
     {
-        if (lists.length == 0)
+        if (lists.Length == 0)
         {
             return null;
         }
@@ -43,27 +43,24 @@ public class Solution
     {
         if (l == null) return r;
         if (r == null) return l;
-        ListNode head = new ListNode(-1, l);
-        ListNode pre = head;
-        ListNode tmp;
+        ListNode head = new ListNode();
+        ListNode tail = head;
         while (l != null && r != null)
         {
             if (l.val <= r.val)
             {
-                pre = l;
+                tail.next = l;
                 l = l.next;
             }
             else
             {
-                pre.next = r;
-                tmp = r.next;
-                r.next = l;
-                pre = r;
-                r = tmp;
+                tail.next = r;
+                r = r.next;
             }
+            tail = tail.next;
         }
 
-        if (l == null) pre.next = r;
+        tail.next = (l != null ? l : r);
 
         return head.next;
     }
