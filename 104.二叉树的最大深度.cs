@@ -21,7 +21,7 @@
 public class Solution
 {
     // 分解问题解法
-    public int MaxDepth(TreeNode root)
+    public int MaxDepth2(TreeNode root)
     {
         if (root == null) return 0;
 
@@ -29,6 +29,29 @@ public class Solution
         int maxRight = MaxDepth(root.right);
 
         return Math.Max(maxLeft, maxRight) + 1;
+    }
+
+    // 遍历解法
+    int res = 0;
+    int maxDepth = 0;
+    public int MaxDepth(TreeNode root)
+    {
+        Traverse(root);
+        return res;
+    }
+
+    public void Traverse(TreeNode root)
+    {
+        if (root == null)
+        {
+            res = Math.Max(res, maxDepth);
+            return;
+        }
+
+        ++maxDepth;
+        Traverse(root.left);
+        Traverse(root.right);
+        --maxDepth;
     }
 }
 // @lc code=end
