@@ -36,6 +36,7 @@ public class Solution
             if (inorder[i] == rootValue)
             {
                 rootIndex = i;
+                break;
             }
         }
         TreeNode root = new TreeNode(rootValue);
