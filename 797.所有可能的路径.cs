@@ -9,30 +9,28 @@ public class Solution
 {
     // 记录所有路径
     IList<IList<int>> res = new List<IList<int>>();
+    List<int> path = new List<int>();
     public IList<IList<int>> AllPathsSourceTarget(int[][] graph)
     {
-        List<int> path = new List<int>();
-        Traverse(graph, 0, path);
+        path.Add(0);
+        Traverse(graph, 0, graph.Length - 1);
         return res;
     }
 
-    public void Traverse(int[][] graph, int s, List<int> path)
+    public void Traverse(int[][] graph, int s, int n)
     {
-        path.Add(s);
-
-        if (s == graph.Length - 1)
+        if (s == n)
         {
             res.Add(new List<int>(path));
-            path.RemoveAt(path.Count - 1);
             return;
         }
 
         foreach (int i in graph[s])
         {
-            Traverse(graph, i, path);
+            path.Add(i);
+            Traverse(graph, i, graph.Length - 1);
+            path.RemoveAt(path.Count - 1);
         }
-
-        path.RemoveAt(path.Count - 1);
     }
 }
 // @lc code=end
