@@ -13,13 +13,13 @@ public class Solution
     public IList<IList<int>> AllPathsSourceTarget(int[][] graph)
     {
         path.Add(0);
-        Traverse(graph, 0, graph.Length - 1);
+        Traverse(graph, 0);
         return res;
     }
 
-    public void Traverse(int[][] graph, int s, int n)
+    public void Traverse(int[][] graph, int s)
     {
-        if (s == n)
+        if (s == graph.Length - 1)
         {
             res.Add(new List<int>(path));
             return;
@@ -28,7 +28,7 @@ public class Solution
         foreach (int i in graph[s])
         {
             path.Add(i);
-            Traverse(graph, i, graph.Length - 1);
+            Traverse(graph, i);
             path.RemoveAt(path.Count - 1);
         }
     }
