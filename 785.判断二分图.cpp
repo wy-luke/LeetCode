@@ -16,22 +16,31 @@ public:
         int n = graph.size();
         visited.resize(n);
         color.resize(n);
-        for (int i = 0; i < n; ++i) {
-            if (!visited[i]) traverse(graph, i);
+        for (int v = 0; v < n; ++v) {
+            if (!visited[v]) bfs(graph, v);
         }
         return res;
     }
 
-    void traverse(vector<vector<int>> &graph, int i) {
-        if (!res) return;
+    void bfs(vector<vector<int>> &graph, int start) {
+        queue<int> q;
+        visited[start] = true;
+        q.push(start);
 
-        visited[i] = true;
-        for (int node : graph[i]) {
-            if (visited[node]) {
-                if (color[node] == color[i]) res = false;
-            } else {
-                color[node] = !color[i];
-                traverse(graph, node);
+        while (!q.empty() && res) {
+            int v = q.front();
+            q.pop();
+            for (int w : graph[v]) {
+                if (!visited[w]) {
+                    visited[w] = true;
+                    color[w] = !color[v];
+                    q.push(w);
+                } else {
+                    if (color[w] == color[v]) {
+                        res = false;
+                        break;
+                    }
+                }
             }
         }
     }
