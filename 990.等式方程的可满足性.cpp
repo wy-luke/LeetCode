@@ -6,14 +6,19 @@
 
 // @lc code=start
 class Solution {
+    // 用于记录等式，1 为 ==， 0 为 !=，可改为链表储存
     int dp[26][26];
+    // 记录两个数是否相等，相当于一个备忘录
     bool notEqual[26 * 26];
+    // 记录每次搜索的路径，防止回头
     vector<bool> visited;
 
 public:
     bool dfs(int x, int y) {
+        // 如果记录有 (x, y) 不相等或已经路过 (x, y)，则返回 false
         if (notEqual[x * 26 + y] || visited[x * 26 + y]) return false;
 
+        // 如果 (x, y) 相等则返回 true
         if (dp[x][y] == 1) return true;
 
         visited[x * 26 + y] = true;
@@ -23,6 +28,7 @@ public:
             }
         }
         notEqual[x * 26 + y] = true;
+        notEqual[y * 26 + x] = true;
         return false;
     }
 
@@ -47,6 +53,7 @@ public:
         for (string i : equations) {
             if (i[1] == '!') {
                 if (dfs(i[0] - 'a', i[3] - 'a')) return false;
+                // 每次搜索是独立的，所以每次搜索后需要把 visited 还原
                 fill(visited.begin(), visited.end(), false);
             }
         }
