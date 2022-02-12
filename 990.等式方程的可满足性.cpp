@@ -14,17 +14,23 @@ class Solution {
     vector<bool> visited;
 
 public:
-    bool dfs(int x, int y) {
-        // 如果记录有 (x, y) 不相等或已经路过 (x, y)，则返回 false
-        if (notEqual[x * 26 + y] || visited[x * 26 + y]) return false;
+    bool bfs(int x, int y) {
+        queue<pair<int, int>> q;
+        q.emplace(x, y);
+        while (!q.empty()) {
+            int x = q.front().first, y = q.front().second;
+            q.pop();
 
-        // 如果 (x, y) 相等则返回 true
-        if (dp[x][y] == 1) return true;
+            // 如果记录有 (x, y) 不相等或已经路过 (x, y)，则返回 false
+            if (notEqual[x * 26 + y] || visited[x * 26 + y]) continue;
 
-        visited[x * 26 + y] = true;
-        for (int i = 0; i < 26; ++i) {
-            if (dp[x][i] == 1) {
-                if (dfs(i, y)) return true;
+            // 如果 (x, y) 相等则返回 true
+            if (dp[x][y] == 1) return true;
+
+            visited[x * 26 + y] = true;
+
+            for (int i = 0; i < 26; ++i) {
+                if (dp[x][i] == 1) q.emplace(i, y);
             }
         }
         notEqual[x * 26 + y] = true;
@@ -52,7 +58,7 @@ public:
 
         for (string i : equations) {
             if (i[1] == '!') {
-                if (dfs(i[0] - 'a', i[3] - 'a')) return false;
+                if (bfs(i[0] - 'a', i[3] - 'a')) return false;
                 // 每次搜索是独立的，所以每次搜索后需要把 visited 还原
                 fill(visited.begin(), visited.end(), false);
             }
