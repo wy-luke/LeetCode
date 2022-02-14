@@ -5,48 +5,54 @@
  */
 
 // @lc code=start
-class UF {
-    vector<int> parent;
-    vector<int> size;
+struct Edge {
+    int to;
+    int len;
+};
 
-public:
-    UF(int n) {
-        size.resize(n, 1);
-        parent.reserve(n);
-        for (int i = 0; i < n; ++i) {
-            parent.emplace_back(i);
-        }
-    }
-
-    void unite(int p, int q) {
-        int rootP = find(p);
-        int rootQ = find(q);
-        if (rootP == rootQ) return;
-
-        if (size[rootP] < size[rootQ]) {
-            parent[rootP] = rootQ;
-        } else {
-            parent[rootQ] = rootP;
-        }
-    }
-
-    int find(int x) {
-        while (parent[x] != x) {
-            parent[x] = parent[parent[x]];
-            x = parent[x];
-        }
-        return x;
-    }
-
-    bool connected(int p, int q) {
-        return find(p) == find(q);
+struct Cmp {
+    bool operator()(Edge &a, Edge &b) {
+        return a.len > b.len;
     }
 };
 
-struct Edge {
-    int p1;
-    int p2;
-    int len;
+class Prim {
+private:
+    vector<bool> visited;
+    vector<vector<Edge>> graph;
+    priority_queue<Edge, vector<Edge>, Cmp> pq;
+
+public:
+    int res;
+
+    void cut(int n) {
+        for (auto edge : graph[n]) {
+            if (visited[edge.to]) continue;
+            pq.emplace(edge);
+        }
+    }
+
+    Prim(vector<vector<Edge>> graphParameter) {
+        graph = graphParameter;
+        int n = graph.size();
+
+        visited.resize(n);
+
+        cut(0);
+        visited[0] = true;
+
+        res = 0;
+        while (!pq.empty()) {
+            Edge edge = pq.top();
+            pq.pop();
+
+            if (visited[edge.to]) continue;
+
+            visited[edge.to] = true;
+            res += edge.len;
+            cut(edge.to);
+        }
+    }
 };
 
 class Solution {
@@ -54,31 +60,19 @@ public:
     int minCostConnectPoints(vector<vector<int>> &points) {
         int n = points.size();
 
-        vector<Edge> edges;
-        edges.reserve(n);
+        // 建图
+        vector<vector<Edge>> graph(n);
         for (int i = 0; i < n; ++i) {
             for (int j = i + 1; j < n; ++j) {
-                Edge edge = {i, j, abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1])};
-                edges.emplace_back(edge);
+                int length = abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1]);
+                graph[i].push_back({j, length});
+                graph[j].push_back({i, length});
             }
         }
 
-        sort(edges.begin(), edges.end(),
-             [](const auto &a, const auto &b) -> bool {
-                 return a.len < b.len;
-             });
+        Prim prim(graph);
 
-        UF uf(n);
-        int res = 0, num = 1;
-        for (auto i : edges) {
-            if (uf.connected(i.p1, i.p2)) continue;
-
-            uf.unite(i.p1, i.p2);
-            res += i.len;
-            ++num;
-            if (num == n) break;
-        }
-        return res;
+        return prim.res;
     }
 };
 // @lc code=end
