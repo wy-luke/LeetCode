@@ -17,25 +17,26 @@
  * };
  */
 class Solution {
-    int rank;
-    int res;
-
 public:
-    void traverse(TreeNode *root) {
-        if (!root) return;
-
-        traverse(root->left);
-        --rank;
-        if (rank == 0) {
-            res = root->val;
-            return;
-        }
-        traverse(root->right);
-    }
     int kthSmallest(TreeNode *root, int k) {
-        rank = k;
-        traverse(root);
-        return res;
+        stack<TreeNode *> stk;
+
+        while (!stk.empty() || root != nullptr) {
+            while (root != nullptr) {
+                stk.emplace(root);
+                root = root->left;
+            }
+
+            root = stk.top();
+            stk.pop();
+
+            --k;
+            if (k == 0) break;
+
+            root = root->right;
+        }
+
+        return root->val;
     }
 };
 // @lc code=end
