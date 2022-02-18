@@ -21,23 +21,13 @@ public:
     TreeNode *insertIntoBST(TreeNode *root, int val) {
         if (!root) return new TreeNode(val);
 
-        TreeNode *res = root;
-        while (root) {
-            if (val < root->val) {
-                if (!root->left) {
-                    root->left = new TreeNode(val);
-                    break;
-                }
-                root = root->left;
-            } else {
-                if (!root->right) {
-                    root->right = new TreeNode(val);
-                    break;
-                }
-                root = root->right;
-            }
+        if (val < root->val) {
+            root->left = insertIntoBST(root->left, val);
+        } else {
+            root->right = insertIntoBST(root->right, val);
         }
-        return res;
+
+        return root;
     }
 };
 // @lc code=end
