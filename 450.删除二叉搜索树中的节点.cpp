@@ -29,11 +29,11 @@ public:
         if (root == nullptr) return nullptr;
 
         if (key == root->val) {
-            if (root->right != nullptr) {
-                getBottom(root->right)->left = root->left;
-                return root->right;
-            }
-            return root->left;
+            if (root->right == nullptr) return root->left;
+            if (root->left == nullptr) return root->right;
+
+            getBottom(root->right)->left = root->left;
+            return root->right;
         }
 
         if (key < root->val) {
