@@ -30,8 +30,8 @@ public:
 
         vector<TreeNode *> res;
         for (int i = start; i <= end; ++i) {
-            for (auto &m : build(start, i - 1)) {
-                for (auto &n : build(i + 1, end)) {
+            for (TreeNode *&m : build(start, i - 1)) {
+                for (TreeNode *&n : build(i + 1, end)) {
                     TreeNode *node = new TreeNode(i);
                     node->left = m;
                     node->right = n;
