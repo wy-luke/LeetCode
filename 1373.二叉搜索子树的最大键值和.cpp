@@ -18,23 +18,28 @@
  */
 class Solution {
 public:
-    // isBST, max, min, sum
-    array<int, 4> traverse(TreeNode *root) {
-        if (root == nullptr) return {1, INT_MIN, INT_MAX, 0};
-
-        array<int, 4> left = traverse(root->left);
-        array<int, 4> right = traverse(root->right);
-
-        if (left[0] == 0 || right[0] == 0 ||
-            root->val <= left[1] || root->val >= right[2]) {
-            return {0, 0, 0, 0};
-        } else {
-            int maxValue = right[1] == INT_MIN ? root->val : right[1];
-            int minValue = left[2] == INT_MAX ? root->val : left[2];
-            int sum = left[3] + right[3] + root->val;
-            res = max(res, sum);
-            return {1, maxValue, minValue, sum};
+    void traverse(TreeNode *root) {
+        if (isBST(root, INT_MAX, INT_MIN)) {
+            getSum(root);
+            return;
         }
+
+        traverse(root->left);
+        traverse(root->right);
+    }
+
+    bool isBST(TreeNode *root, int max, int min) {
+        if (root == nullptr) return true;
+
+        return root->val < max && root->val > min && isBST(root->left, root->val, min) && isBST(root->right, max, root->val);
+    }
+
+    int getSum(TreeNode *root) {
+        if (root == nullptr) return 0;
+
+        int sum = root->val + getSum(root->left) + getSum(root->right);
+        res = max(res, sum);
+        return sum;
     }
 
     int maxSumBST(TreeNode *root) {
