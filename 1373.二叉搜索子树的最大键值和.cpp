@@ -19,59 +19,22 @@
 class Solution {
 public:
     // isBST, max, min, sum
-    void traverse(TreeNode *root) {
-        if (root == nullptr) return;
+    array<int, 4> traverse(TreeNode *root) {
+        if (root == nullptr) return {1, INT_MIN, INT_MAX, 0};
 
-        traverse(root->left);
-        traverse(root->right);
+        array<int, 4> left = traverse(root->left);
+        array<int, 4> right = traverse(root->right);
 
-        if (bstMemo.count(root) == 0) {
-            if (!isBST(root, nullptr, nullptr)) {
-                return;
-            } else {
-                bstMemo[root] = true;
-                int sum;
-                if (sumMemo.count(root) == 0) {
-                    sum = getSum(root);
-                    sumMemo[root] = sum;
-                } else {
-                    sum = sumMemo[root];
-                }
-                res = max(res, sum);
-            }
+        if (left[0] == 0 || right[0] == 0 ||
+            root->val <= left[1] || root->val >= right[2]) {
+            return {0, 0, 0, 0};
         } else {
-            if (!bstMemo[root]) {
-                return;
-            } else {
-                bstMemo[root] = true;
-                int sum;
-                if (sumMemo.count(root) == 0) {
-                    sum = getSum(root);
-                    sumMemo[root] = sum;
-                } else {
-                    sum = sumMemo[root];
-                }
-                res = max(res, sum);
-            }
+            int maxValue = right[1] == INT_MIN ? root->val : right[1];
+            int minValue = left[2] == INT_MAX ? root->val : left[2];
+            int sum = left[3] + right[3] + root->val;
+            res = max(res, sum);
+            return {1, maxValue, minValue, sum};
         }
-    }
-
-    bool isBST(TreeNode *root, TreeNode *max, TreeNode *min) {
-        if (root == nullptr) return true;
-
-        if (max != nullptr && (root->val) >= max->val) return false;
-        if (min != nullptr && (root->val) <= min->val) return false;
-
-        return isBST(root->left, root, min) && isBST(root->right, max, root);
-    }
-
-    int getSum(TreeNode *root) {
-        if (root == nullptr) return 0;
-
-        int left = getSum(root->left);
-        int right = getSum(root->right);
-
-        return left + right + root->val;
     }
 
     int maxSumBST(TreeNode *root) {
@@ -81,7 +44,5 @@ public:
 
 private:
     int res = 0;
-    unordered_map<TreeNode *, bool> bstMemo;
-    unordered_map<TreeNode *, int> sumMemo;
 };
 // @lc code=end
