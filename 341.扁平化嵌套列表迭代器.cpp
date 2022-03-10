@@ -25,31 +25,31 @@
 
 class NestedIterator {
 private:
-    vector<int> res;
-    vector<int>::iterator it;
+    stack<pair<vector<NestedInteger>::iterator, vector<NestedInteger>::iterator>> stk;
 
 public:
     NestedIterator(vector<NestedInteger> &nestedList) {
-        traverse(nestedList);
-        it = res.begin();
+        stk.emplace(nestedList.begin(), nestedList.end());
     }
 
     int next() {
-        return *it++;
+        return (stk.top().first++)->getInteger();
     }
 
     bool hasNext() {
-        return it < res.end();
-    }
-
-    void traverse(vector<NestedInteger> &nestedList) {
-        for (auto &i : nestedList) {
-            if (i.isInteger()) {
-                res.emplace_back(i.getInteger());
-            } else {
-                traverse(i.getList());
+        while (!stk.empty()) {
+            auto &p = stk.top();
+            if (p.first == p.second) {
+                stk.pop();
+                continue;
             }
+
+            if (p.first->isInteger()) return true;
+
+            auto &nList = (p.first++)->getList();
+            stk.emplace(nList.begin(), nList.end());
         }
+        return false;
     }
 };
 
