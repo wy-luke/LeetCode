@@ -21,6 +21,7 @@ public:
     int countNodes(TreeNode *root) {
         if (root == nullptr) return 0;
 
+        // 计算左右子树的层数
         int lh = 1, rh = 1;
         TreeNode *lTree = root, *rTree = root;
         while (lTree->left != nullptr) {
@@ -32,7 +33,7 @@ public:
             ++rh;
         }
 
-        if (lh == rh) return (int)(pow(2, lh)) - 1;
+        if (lh == rh) return (1<<lh) - 1;
 
         return countNodes(root->left) + countNodes(root->right) + 1;
     }
