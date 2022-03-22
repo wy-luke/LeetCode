@@ -13,31 +13,26 @@ public:
         int right = n - 1, bottom = m - 1;
         vector<int> res;
         res.reserve(m * n);
-        while (res.size() != m * n) {
-            if (top <= bottom) {
-                for (int i = left; i <= right; ++i) {
-                    res.emplace_back(matrix[top][i]);
-                }
-                top++;
+        while (true) {
+            for (int i = left; i <= right; ++i) {
+                res.emplace_back(matrix[top][i]);
             }
-            if (left <= right) {
-                for (int i = top; i <= bottom; ++i) {
-                    res.emplace_back(matrix[i][right]);
-                }
-                right--;
+            if (++top > bottom) break;
+
+            for (int i = top; i <= bottom; ++i) {
+                res.emplace_back(matrix[i][right]);
             }
-            if (top <= bottom) {
-                for (int i = right; i >= left; --i) {
-                    res.emplace_back(matrix[bottom][i]);
-                }
-                bottom--;
+            if (--right < left) break;
+
+            for (int i = right; i >= left; --i) {
+                res.emplace_back(matrix[bottom][i]);
             }
-            if (left <= right) {
-                for (int i = bottom; i >= top; --i) {
-                    res.emplace_back(matrix[i][left]);
-                }
-                left++;
+            if (--bottom < top) break;
+
+            for (int i = bottom; i >= top; --i) {
+                res.emplace_back(matrix[i][left]);
             }
+            if (++left > right) break;
         }
         return res;
     }
