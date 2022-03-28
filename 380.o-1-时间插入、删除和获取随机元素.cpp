@@ -18,6 +18,7 @@ public:
             return false;
         } else {
             nums.emplace_back(val);
+            // 由于先往 vector 里添加 val，所以 index 为 size - 1
             valToIndex.emplace(val, nums.size() - 1);
             return true;
         }
