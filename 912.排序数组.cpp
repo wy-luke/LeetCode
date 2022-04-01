@@ -36,9 +36,9 @@ public:
         for (int i = lo; i <= hi; ++i) {
             // 注意，nums 这里只用于存放排好序的结果，数值会被更新
             // 所以原值都要从 tmp 中获取
-            if (p > mid) {
+            if (p == mid + 1) {
                 nums[i] = tmp[q++]; // 注意是从 tmp 中取值
-            } else if (q > hi) {
+            } else if (q == hi + 1) {
                 nums[i] = tmp[p++];
             } else if (tmp[p] > tmp[q]) { // 注意是比较 tmp
                 nums[i] = tmp[q++];
