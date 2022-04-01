@@ -40,6 +40,8 @@ public:
                 nums[i] = tmp[q++]; // 注意是从 tmp 中取值
             } else if (q == hi + 1) {
                 nums[i] = tmp[p++];
+                // 注意这里分为了 大于 和 小于等于 两种情况，只有前面的数大，才把先放后面的数
+                // 而当前面的数 小于等于 后面的数时，都是先放 前面的数，可以保证稳定排序
             } else if (tmp[p] > tmp[q]) { // 注意是比较 tmp
                 nums[i] = tmp[q++];
             } else {
