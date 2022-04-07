@@ -17,29 +17,20 @@ class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
         ListNode *p1 = headA, *p2 = headB;
-        while (p1->next != nullptr) {
-            p1 = p1->next;
-        }
-        ListNode *tmp = p1;
-        p1->next = p2;
+        while (p1 != p2) {
+            if (p1 == nullptr) {
+                p1 = headB;
+            } else {
+                p1 = p1->next;
+            }
 
-        p1 = p2 = headA;
-        while (p2 != nullptr && p2->next != nullptr) {
-            p1 = p1->next;
-            p2 = p2->next->next;
-
-            if (p1 == p2) {
-                p1 = headA;
-                while (p1 != p2) {
-                    p1 = p1->next;
-                    p2 = p2->next;
-                }
-                tmp->next = nullptr;
-                return p1;
+            if (p2 == nullptr) {
+                p2 = headA;
+            } else {
+                p2 = p2->next;
             }
         }
-        tmp->next = nullptr;
-        return nullptr;
+        return p1;
     }
 };
 // @lc code=end
