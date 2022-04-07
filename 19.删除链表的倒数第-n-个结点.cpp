@@ -18,19 +18,18 @@
 class Solution {
 public:
     ListNode *removeNthFromEnd(ListNode *head, int n) {
-        ListNode *p1 = head, *p2 = head;
         ListNode *dummy = new ListNode(-1, head);
-        ListNode *pre = dummy;
-        while (n > 0) {
+        ListNode *p1 = dummy, *p2 = dummy;
+        // 直接找倒数第 n+1 个，省去 pre 变量记录前一个节点
+        while (n >= 0) {
             p2 = p2->next;
             n--;
         }
         while (p2 != nullptr) {
             p2 = p2->next;
-            pre = p1;
             p1 = p1->next;
         }
-        pre->next = p1->next;
+        p1->next = p1->next->next;
         return dummy->next;
     }
 };
