@@ -11,18 +11,15 @@ public:
         int n = nums.size();
         if (n == 0) return 0;
 
-        int i = 0, j = n - 1;
-        while (i <= j) {
-            if (nums[i] == val) {
-                int tmp = nums[i];
+        int i = 0, j = 0;
+        while (j < n) {
+            if (nums[j] != val) {
                 nums[i] = nums[j];
-                nums[j] = tmp;
-                --j;
-            } else {
                 ++i;
             }
+            ++j;
         }
-        return i + 1;
+        return i;
     }
 };
 // @lc code=end
