@@ -18,22 +18,11 @@
  */
 class Solution {
 public:
-    int res = 1;
     int maxDepth(TreeNode *root) {
         if (root == nullptr) return 0;
-        traverse(root, 1);
-        return res;
-    }
 
-    void traverse(TreeNode *root, int depth) {
-        if (root->left != nullptr) {
-            res = max(res, depth + 1);
-            traverse(root->left, depth + 1);
-        }
-        if (root->right != nullptr) {
-            res = max(res, depth + 1);
-            traverse(root->right, depth + 1);
-        }
+        return max(maxDepth(root->left), maxDepth(root->right)) + 1;
     }
 };
+
 // @lc code=end
