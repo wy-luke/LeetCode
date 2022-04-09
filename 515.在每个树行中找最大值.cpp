@@ -17,30 +17,28 @@
  * };
  */
 class Solution {
+private:
+    vector<int> res;
+    int depth = 0;
+
 public:
     vector<int> largestValues(TreeNode *root) {
-        if (root == nullptr) return {};
-        queue<TreeNode *> q;
-        q.emplace(root);
-
-        vector<int> res;
-        while (!q.empty()) {
-            int n = q.size();
-            int maxValue = INT_MIN;
-            while (n > 0) {
-                TreeNode *node = q.front();
-                q.pop();
-                maxValue = max(maxValue, node->val);
-                if (node->left != nullptr) q.emplace(node->left);
-                if (node->right != nullptr) q.emplace(node->right);
-                --n;
-            }
-            res.emplace_back(maxValue);
-        }
+        traverse(root);
         return res;
     }
 
-private:
-    vector<int> res;
+    void traverse(TreeNode *root) {
+        if (root == nullptr) return;
+
+        if (depth >= res.size()) {
+            res.emplace_back(root->val);
+        } else {
+            res[depth] = max(res[depth], root->val);
+        }
+        depth++;
+        traverse(root->left);
+        traverse(root->right);
+        depth--;
+    }
 };
 // @lc code=end
