@@ -9,6 +9,7 @@
         "xhash": "cpp",
         "xstring": "cpp",
         "utility": "cpp",
-        "xiosbase": "cpp"
+        "xiosbase": "cpp",
+        "cstdlib": "cpp"
     }
 }
