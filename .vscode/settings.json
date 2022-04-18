@@ -10,6 +10,7 @@
         "xstring": "cpp",
         "utility": "cpp",
         "xiosbase": "cpp",
-        "cstdlib": "cpp"
+        "cstdlib": "cpp",
+        "algorithm": "cpp"
     }
 }
