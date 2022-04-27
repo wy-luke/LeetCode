@@ -11,6 +11,7 @@
         "utility": "cpp",
         "xiosbase": "cpp",
         "cstdlib": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "limits": "cpp"
     }
 }
