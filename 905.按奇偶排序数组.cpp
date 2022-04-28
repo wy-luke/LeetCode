@@ -8,15 +8,15 @@
 class Solution {
 public:
     vector<int> sortArrayByParity(vector<int> &nums) {
-        int i = 0, j = 0;
-        while (j < nums.size()) {
-            if (nums[j] % 2 == 0) {
-                int tmp = nums[j];
-                nums[j] = nums[i];
-                nums[i] = tmp;
+        int i = 0, j = nums.size() - 1;
+        while (i < j) {
+            while (i < j && nums[i] % 2 == 0) {
                 ++i;
             }
-            ++j;
+            while (i < j && nums[j] % 2 != 0) {
+                --j;
+            }
+            swap(nums[i++], nums[j--]);
         }
         return nums;
     }
