@@ -22,31 +22,19 @@ public:
         if (root == nullptr) return {};
         bool b = false;
         vector<vector<int>> res;
-        deque<TreeNode *> q;
-        q.emplace_back(root);
+        queue<TreeNode *> q;
+        q.emplace(root);
         while (!q.empty()) {
             int sz = q.size();
-            vector<int> v;
-            v.reserve(sz);
+            vector<int> v(sz);
             for (int i = 0; i < sz; ++i) {
-                TreeNode *node;
-                if (b) {
-                    node = q.back();
-                    q.pop_back();
-                } else {
-                    node = q.front();
-                    q.pop_front();
-                }
+                TreeNode *node = q.front();
+                q.pop();
 
-                v.emplace_back(node->val);
+                v[b ? sz - 1 - i : i] = node->val;
 
-                if (b) {
-                    if (node->right != nullptr) q.emplace_front(node->right);
-                    if (node->left != nullptr) q.emplace_front(node->left);
-                } else {
-                    if (node->left != nullptr) q.emplace_back(node->left);
-                    if (node->right != nullptr) q.emplace_back(node->right);
-                }
+                if (node->left != nullptr) q.emplace(node->left);
+                if (node->right != nullptr) q.emplace(node->right);
             }
             res.emplace_back(v);
             b = !b;
