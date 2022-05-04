@@ -21,7 +21,7 @@ public:
         for (int i = 0; i < n; ++i) {
             st.emplace(i);
         }
-        
+
         int cur = 0;
         while (st.size() != 1) {
             int count = 0;
@@ -36,6 +36,20 @@ public:
                 ++cur;
         }
         return *st.begin() + 1;
+
+        // 下面为直接用 queue 模拟的解法，实现更简单一些
+        // queue<int> q;
+        // for (int i = 1; i <= n; ++i) {
+        //     q.emplace(i);
+        // }
+        // while (q.size() != 1) {
+        //     for (int i = 1; i < k; ++i) {
+        //         q.emplace(q.front());
+        //         q.pop();
+        //     }
+        //     q.pop();
+        // }
+        // return q.front();
     }
 };
 // @lc code=end
