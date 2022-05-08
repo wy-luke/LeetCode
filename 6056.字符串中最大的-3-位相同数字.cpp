@@ -8,17 +8,11 @@
 class Solution {
 public:
     string largestGoodInteger(string num) {
-        int maxV = -1;
-        string res = "";
-        for (int i = 0; i < num.size() - 2; ++i) {
-            if (num[i] == num[i + 1] && num[i + 1] == num[i + 2]) {
-                if (num[i] - '0' > maxV) {
-                    res = num.substr(i, 3);
-                    maxV = num[i] - '0';
-                }
-            }
+        for (char i = '9'; i >= '0'; --i) {
+            string s(3, i);
+            if (num.find(s) != string::npos) return s;
         }
-        return res;
+        return "";
     }
 };
 // @lc code=end
