@@ -1,7 +1,7 @@
 /*
- * @lc app=leetcode.cn id=6063 lang=cpp
+ * @lc app=leetcode.cn id=2242 lang=cpp
  *
- * [6063] 节点序列的最大得分
+ * [2242] 节点序列的最大得分
  */
 
 // @lc code=start
