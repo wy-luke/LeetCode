@@ -1,7 +1,7 @@
 /*
- * @lc app=leetcode.cn id=6056 lang=cpp
+ * @lc app=leetcode.cn id=2264 lang=cpp
  *
- * [6056] 字符串中最大的 3 位相同数字
+ * [2264] 字符串中最大的 3 位相同数字
  */
 
 // @lc code=start

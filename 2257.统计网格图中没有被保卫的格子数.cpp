@@ -1,7 +1,7 @@
 /*
- * @lc app=leetcode.cn id=6053 lang=cpp
+ * @lc app=leetcode.cn id=2257 lang=cpp
  *
- * [6053] 统计网格图中没有被保卫的格子数
+ * [2257] 统计网格图中没有被保卫的格子数
  */
 
 // @lc code=start

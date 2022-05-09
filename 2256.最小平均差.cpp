@@ -1,7 +1,7 @@
 /*
- * @lc app=leetcode.cn id=6052 lang=cpp
+ * @lc app=leetcode.cn id=2256 lang=cpp
  *
- * [6052] 最小平均差
+ * [2256] 最小平均差
  */
 
 // @lc code=start

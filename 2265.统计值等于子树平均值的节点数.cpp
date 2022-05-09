@@ -1,7 +1,7 @@
 /*
- * @lc app=leetcode.cn id=6057 lang=cpp
+ * @lc app=leetcode.cn id=2265 lang=cpp
  *
- * [6057] 统计值等于子树平均值的节点数
+ * [2265] 统计值等于子树平均值的节点数
  */
 
 // @lc code=start

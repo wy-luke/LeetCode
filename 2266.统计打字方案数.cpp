@@ -1,7 +1,7 @@
 /*
- * @lc app=leetcode.cn id=6058 lang=cpp
+ * @lc app=leetcode.cn id=2266 lang=cpp
  *
- * [6058] 统计打字方案数
+ * [2266] 统计打字方案数
  */
 
 // @lc code=start
