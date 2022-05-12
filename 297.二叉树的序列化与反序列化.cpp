@@ -18,48 +18,34 @@ class Codec {
 public:
     // Encodes a tree to a single string.
     string serialize(TreeNode *root) {
-        if (root == nullptr) return "#";
+        if (root == nullptr) return "*";
 
-        string left = serialize(root->left);
-        string right = serialize(root->right);
-
-        return left + "," + right + "," + to_string(root->val);
+        return to_string(root->val) + "#" + serialize(root->left) + "#" + serialize(root->right);
     }
 
-    // #,#,2,#,#,4,#,#,5,3,1
     // Decodes your encoded data to tree.
     TreeNode *deserialize(string data) {
-        vector<TreeNode *> nodes;
-        string tmp;
-        for (int i = 0; i < data.size(); ++i) {
-            if (data[i] == ',') {
-                if (!tmp.empty()) nodes.push_back(new TreeNode(stoi(tmp)));
-                tmp.clear();
-            } else if (data[i] == '#') {
-                nodes.push_back(nullptr);
-            } else {
-                tmp.push_back(data[i]);
-                // 最后一个节点
-                if (i == (data.size() - 1)) nodes.push_back(new TreeNode(stoi(tmp)));
-            }
-        }
-
-        return des(nodes);
+        int i = 0;
+        return deser(data, i);
     }
 
-    TreeNode *des(vector<TreeNode *> &nodes) {
-        if (nodes.back() == nullptr) {
-            nodes.pop_back();
+    TreeNode *deser(string &data, int &i) {
+        if (data[i] == '#') i++;
+        if (data[i] == '*') {
+            i++;
             return nullptr;
         }
+        // 由于有负数，所以需要用 stoi()
+        string tmp = "";
+        for (; i < data.size(); ++i) {
+            if (data[i] == '#') break;
+            tmp += data[i];
+        }
 
-        TreeNode *root = nodes.back();
-        nodes.pop_back();
-
-        root->right = des(nodes);
-        root->left = des(nodes);
-
-        return root;
+        TreeNode *res = new TreeNode(stoi(tmp));
+        res->left = deser(data, i);
+        res->right = deser(data, i);
+        return res;
     }
 };
 
