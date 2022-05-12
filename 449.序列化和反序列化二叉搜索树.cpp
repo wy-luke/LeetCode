@@ -1,11 +1,3 @@
-// @before-stub-for-debug-begin
-#include "commoncppproblem449.h"
-#include <string>
-#include <vector>
-
-using namespace std;
-// @before-stub-for-debug-end
-
 /*
  * @lc app=leetcode.cn id=449 lang=cpp
  *
@@ -42,7 +34,6 @@ public:
 
     // Decodes your encoded data to tree.
     TreeNode *deserialize(string data) {
-        cout << data << endl;
         queue<int> q;
         int num = 0;
         for (int i = 0; i < data.size(); ++i) {
@@ -57,9 +48,8 @@ public:
     }
 
     TreeNode *deser(queue<int> &q, int lo, int hi) {
-        if (q.empty()) return nullptr;
+        if (q.empty() || q.front() < lo || q.front() > hi) return nullptr;
         int num = q.front();
-        if (num < lo || num > hi) return nullptr;
         q.pop();
         TreeNode *res = new TreeNode(num);
         res->left = deser(q, lo, num);
@@ -74,4 +64,5 @@ public:
 // string tree = ser->serialize(root);
 // TreeNode* ans = deser->deserialize(tree);
 // return ans;
+
 // @lc code=end
