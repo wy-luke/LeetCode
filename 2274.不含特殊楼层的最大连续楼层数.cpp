@@ -8,15 +8,15 @@
 class Solution {
 public:
     int maxConsecutive(int bottom, int top, vector<int> &special) {
+        // 加入 top+1，简化代码逻辑
+        special.emplace_back(top + 1);
         sort(special.begin(), special.end());
-        int left = bottom, index = 0;
+        int left = bottom;
         int res = 0;
-        while (index < special.size()) {
-            res = max(res, special[index] - left);
-            left = special[index] + 1;
-            index++;
+        for (int i = 0; i < special.size(); ++i) {
+            res = max(res, special[i] - left);
+            left = special[i] + 1;
         }
-        res = max(res, top - left + 1);
         return res;
     }
 };
