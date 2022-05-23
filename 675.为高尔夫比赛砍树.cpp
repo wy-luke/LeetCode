@@ -10,15 +10,22 @@ public:
     int cutOffTree(vector<vector<int>> &forest) {
         int m = forest.size();
         int n = forest[0].size();
-        map<int, pair<int, int>> mp;
+        vector<pair<int, int>> tree;
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
-                if (forest[i][j] > 1) mp[forest[i][j]] = make_pair(i, j);
+                if (forest[i][j] > 1) tree.emplace_back(i, j);
             }
         }
+        // 排序技巧！！！
+        sort(tree.begin(), tree.end(), [&](const auto &a, const auto &b) {
+            return forest[a.first][a.second] < forest[b.first][b.second];
+        });
+        // 方向数组
         int dir[4][2] = {0, 1, 0, -1, 1, 0, -1, 0};
+        // 没有递归，可使用 auto
         function<int(int, int, int, int)> bfs = [&](int startx, int starty, int endx, int endy) -> int {
-            int step = 0;
+            if (startx == endx && starty == endy) return 0;
+            int step = 1;
             queue<pair<int, int>> q;
             q.emplace(startx, starty);
             vector<vector<bool>> vis(m, vector<bool>(n));
@@ -26,27 +33,33 @@ public:
             while (!q.empty()) {
                 int sz = q.size();
                 for (int i = 0; i < sz; ++i) {
+                    // 技巧！！！
                     auto [curx, cury] = q.front();
                     q.pop();
-                    if (curx == endx && cury == endy) return step;
                     for (int j = 0; j < 4; ++j) {
-                        int nxtx = curx + dir[j][0];
-                        int nxty = cury + dir[j][1];
-                        if (nxtx < 0 || nxtx >= m || nxty < 0 || nxty >= n || vis[nxtx][nxty] || forest[nxtx][nxty] == 0) continue;
-                        q.emplace(nxtx, nxty);
-                        vis[nxtx][nxty] = true;
+                        int nx = curx + dir[j][0];
+                        int ny = cury + dir[j][1];
+                        if (nx < 0 || nx >= m || ny < 0 || ny >= n || vis[nx][ny] || forest[nx][ny] == 0) continue;
+                        // 注意这里如果 start == end，会找不到结果
+                        // 但是一开头检查了这种情况，所以这里写在这里
+                        if (nx == endx && ny == endy) return step;
+                        q.emplace(nx, ny);
+                        vis[nx][ny] = true;
                     }
                 }
                 ++step;
             }
             return -1;
         };
-        int res = bfs(0, 0, mp.begin()->second.first, mp.begin()->second.second);
-        if (res == -1) return -1;
-        for (auto m = mp.begin(); m != prev(mp.end()); ++m) {
-            int d = bfs(m->second.first, m->second.second, next(m)->second.first, next(m)->second.second);
+        int res = 0;
+        int cx = 0, cy = 0;
+        for (int i = 0; i < tree.size(); ++i) {
+            int d = bfs(cx, cy, tree[i].first, tree[i].second);
             if (d == -1) return -1;
             res += d;
+            // 这里用到了一个小技巧，把比较合并在一个 for 循环
+            cx = tree[i].first;
+            cy = tree[i].second;
         }
         return res;
     }
