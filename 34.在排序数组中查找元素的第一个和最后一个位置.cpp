@@ -8,33 +8,30 @@
 class Solution {
 public:
     vector<int> searchRange(vector<int> &nums, int target) {
-        int left = 0, right = nums.size() - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
+        int l = 0, r = nums.size();
+        while (l < r) {
+            int mid = l + ((r - l) >> 1);
             if (nums[mid] < target) {
-                left = mid + 1;
-            } else if (nums[mid] > target) {
-                right = mid - 1;
-            } else if (nums[mid] == target) {
-                right = mid - 1;
+                l = mid + 1;
+            } else {
+                r = mid;
             }
         }
-        if (left >= nums.size() || nums[left] != target) {
+        if (l == nums.size() || nums[l] != target) {
             return {-1, -1};
-        }
-        int resLeft = left;
-        right = nums.size() - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] < target) {
-                left = mid + 1;
-            } else if (nums[mid] > target) {
-                right = mid - 1;
-            } else if (nums[mid] == target) {
-                left = mid + 1;
+        } else {
+            int tmp = l;
+            r = nums.size();
+            while (l < r) {
+                int mid = l + ((r - l) >> 1);
+                if (nums[mid] <= target) {
+                    l = mid + 1;
+                } else {
+                    r = mid;
+                }
             }
+            return {tmp, l - 1};
         }
-        return {resLeft, right};
     }
 };
 // @lc code=end
