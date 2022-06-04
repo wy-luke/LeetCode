@@ -9,25 +9,19 @@ class Solution {
 public:
     int numUniqueEmails(vector<string> &emails) {
         unordered_set<string> st;
-        int res = 0;
-        for (string &s : emails) {
-            bool skip = false;
-            string tmp = "";
-            for (int i = 0; i < s.size(); ++i) {
-                char c = s[i];
-                if (c == '@') {
-                    tmp += s.substr(i);
+        for (string &email : emails) {
+            string tmp;
+            for (char c : email) {
+                if (c == '@' || c == '+') {
                     break;
-                } else if (c == '+') {
-                    skip = true;
-                } else if (!skip && c != '.') {
+                }
+                if (c != '.') {
                     tmp += c;
                 }
             }
-            if (st.count(tmp) == 0) ++res;
-            st.emplace(tmp);
+            st.emplace(tmp + email.substr(email.find('@')));
         }
-        return res;
+        return st.size();
     }
 };
 // @lc code=end
