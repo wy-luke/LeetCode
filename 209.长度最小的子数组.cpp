@@ -15,6 +15,10 @@ public:
         }
         int res = INT_MAX;
         for (int i = 0; i < n; ++i) {
+            // STL 二分
+            // int t = target + pre[i];
+            // auto it = lower_bound(pre.begin(),pre.end(),t);
+            // if (it != pre.end()) res = min(res, static_cast<int>(it-pre.begin())-i);
             int l = i, r = n;
             while (l < r) {
                 int mid = l + (r - l) / 2;
