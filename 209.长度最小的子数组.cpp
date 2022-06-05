@@ -9,27 +9,15 @@ class Solution {
 public:
     int minSubArrayLen(int target, vector<int> &nums) {
         int n = nums.size();
-        vector<int> pre(n + 1);
-        for (int i = 0; i < n; ++i) {
-            pre[i + 1] = pre[i] + nums[i];
-        }
-        int res = INT_MAX;
-        for (int i = 0; i < n; ++i) {
-            // STL 二分
-            // int t = target + pre[i];
-            // auto it = lower_bound(pre.begin(),pre.end(),t);
-            // if (it != pre.end()) res = min(res, static_cast<int>(it-pre.begin())-i);
-            int l = i, r = n;
-            while (l < r) {
-                int mid = l + (r - l) / 2;
-                // 由前缀和获得 [i,j] 为 pre[j+1]-pre[i]
-                if (pre[mid + 1] - pre[i] >= target) {
-                    r = mid;
-                } else {
-                    l = mid + 1;
-                }
+        int l = 0, r = 0;
+        int sum = 0, res = INT_MAX;
+        while (r < n) {
+            sum += nums[r++];
+
+            while (sum >= target) {
+                res = min(res, r - l);
+                sum -= nums[l++];
             }
-            if (l != n) res = min(res, l - i + 1);
         }
         return res == INT_MAX ? 0 : res;
     }
