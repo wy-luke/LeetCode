@@ -10,17 +10,13 @@ public:
     mt19937 gen{random_device{}()};
     uniform_real_distribution<double> dis;
     double r, xc, yc;
-    Solution(double radius, double x_center, double y_center) : dis(-radius, radius), r(radius), xc(x_center), yc(y_center) {
+    Solution(double radius, double x_center, double y_center) : dis(0, 1), r(radius), xc(x_center), yc(y_center) {
     }
 
     vector<double> randPoint() {
-        while (true) {
-            double x = dis(gen);
-            double y = dis(gen);
-            if (x * x + y * y <= r * r) {
-                return {xc + x, yc + y};
-            }
-        }
+        double l = sqrt(dis(gen) * r * r);
+        double rad = dis(gen) * 2 * acos(-1.0);
+        return {xc + l * cos(rad), yc + l * sin(rad)};
     }
 };
 
