@@ -12,11 +12,13 @@ public:
         if (n < 3) return 0;
         sort(nums.begin(), nums.end());
         int res = 0;
-        for (int i = 0; i < n; ++i) {
-            for (int j = i + 1; j < n; ++j) {
+        for (int i = 0; i < n - 2; ++i) {
+            int k = i + 2;
+            for (int j = i + 1; j < n - 1; ++j) {
                 int target = nums[i] + nums[j];
-                auto it = lower_bound(nums.begin() + j + 1, nums.end(), target);
-                res += (int)(it - nums.begin()) - j - 1;
+                auto it = lower_bound(nums.begin() + k, nums.end(), target);
+                int k = (int)(it - nums.begin());
+                res += max(0, k - j - 1);
             }
         }
         return res;
