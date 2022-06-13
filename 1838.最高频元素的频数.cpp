@@ -7,30 +7,29 @@
 // @lc code=start
 class Solution {
 public:
-    bool check(vector<int> &nums, vector<long long> &pre, int t, int k) {
-        int n = nums.size();
-        for (int i = 0; i < n - t + 1; ++i) {
-            if ((long long)t * nums[i + t - 1] - (pre[i + t] - pre[i]) <= k) return true;
-        }
-        return false;
-    }
     int maxFrequency(vector<int> &nums, int k) {
         sort(nums.begin(), nums.end());
         int n = nums.size();
-        vector<long long> pre(n + 1);
-        for (int i = 0; i < n; ++i) {
-            pre[i + 1] = pre[i] + nums[i];
-        }
-        int l = 2, r = n;
-        while (l <= r) {
-            int mid = l + ((r - l) >> 1);
-            if (check(nums, pre, mid, k)) {
-                l = mid + 1;
-            } else {
-                r = mid - 1;
+        int res = 1;
+        // 滑窗, [l,r)，题目原因，从区间内包含第一个元素开始搜索
+        int l = 0, r = 1;
+        // 窗口内数字和
+        long long sum = nums[0];
+        // 全部化为窗口内最后一个数字需要的操作数
+        int cnt = 0;
+        while (r < n) {
+            int num1 = nums[r++];
+            sum += num1;
+            cnt = (long long)(r - l) * nums[r - 1] - sum;
+
+            while (cnt > k) {
+                int num2 = nums[l++];
+                sum -= num2;
+                cnt = (long long)(r - l) * nums[r - 1] - sum;
             }
+            res = max(res, r - l);
         }
-        return l - 1;
+        return res;
     }
 };
 // @lc code=end
