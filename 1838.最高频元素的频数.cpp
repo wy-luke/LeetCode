@@ -11,21 +11,17 @@ public:
         sort(nums.begin(), nums.end());
         int n = nums.size();
         int res = 1;
-        // 滑窗, [l,r)，题目原因，从区间内包含第一个元素开始搜索
+        // 滑窗, [l,r)，题目原因，初始区间包含第一个元素
         int l = 0, r = 1;
-        // 窗口内数字和
-        long long sum = nums[0];
         // 全部化为窗口内最后一个数字需要的操作数
-        int cnt = 0;
+        long long sum = 0;
         while (r < n) {
             int num1 = nums[r++];
-            sum += num1;
-            cnt = (long long)(r - l) * nums[r - 1] - sum;
+            sum += (long long)(num1 - nums[r - 2]) * (r - l - 1);
 
-            while (cnt > k) {
+            while (sum > k) {
                 int num2 = nums[l++];
-                sum -= num2;
-                cnt = (long long)(r - l) * nums[r - 1] - sum;
+                sum -= (nums[r - 1] - num2);
             }
             res = max(res, r - l);
         }
