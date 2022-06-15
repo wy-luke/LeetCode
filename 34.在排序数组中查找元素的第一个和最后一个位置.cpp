@@ -8,7 +8,10 @@
 class Solution {
 public:
     vector<int> searchRange(vector<int> &nums, int target) {
-        int l = 0, r = nums.size();
+        int n = nums.size();
+        if (n == 0) return {-1, -1};
+
+        int l = 0, r = n;
         while (l < r) {
             int mid = l + ((r - l) >> 1);
             if (nums[mid] < target) {
@@ -17,21 +20,20 @@ public:
                 r = mid;
             }
         }
-        if (l == nums.size() || nums[l] != target) {
-            return {-1, -1};
-        } else {
-            int tmp = l;
-            r = nums.size();
-            while (l < r) {
-                int mid = l + ((r - l) >> 1);
-                if (nums[mid] <= target) {
-                    l = mid + 1;
-                } else {
-                    r = mid;
-                }
+        int firstEqual;
+        if (l < n && nums[l] == target) firstEqual = l;
+        else return {-1, -1};
+
+        r = n;
+        while (l < r) {
+            int mid = l + ((r - l) >> 1);
+            if (nums[mid] <= target) {
+                l = mid + 1;
+            } else {
+                r = mid;
             }
-            return {tmp, l - 1};
         }
+        return {firstEqual, l - 1};
     }
 };
 // @lc code=end
