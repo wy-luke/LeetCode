@@ -14,12 +14,13 @@ public:
         while (l <= r) {
             int mid = l + ((r - l) >> 1);
             int cnt = 0;
+            int j = 0;
             for (int i = 0; i < n; ++i) {
                 // 找到以 i 开始，绝对值差 小于等于 mid 的数对的个数
-                int idx = upper_bound(nums.begin() + i, nums.end(), nums[i] + mid) - nums.begin();
-                cnt += idx - i-1;
+                while (j < n && nums[j] - nums[i] <= mid) ++j;
+                cnt += j - i - 1;
             }
-            // 找到第一个 cnt 大于等于 k 的，即为所求
+            // 找到第一个 大于等于 k 的 cnt ，对应的 val 即为所求
             if (cnt < k) {
                 l = mid + 1;
             } else {
