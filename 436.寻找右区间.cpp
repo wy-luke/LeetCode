@@ -8,23 +8,17 @@
 class Solution {
 public:
     vector<int> findRightInterval(vector<vector<int>> &intervals) {
-        // 题目说明每个区间 start 均不相同
-        // 记录每个 start 出现的 index
-        map<int, int> mp;
         int n = intervals.size();
+        vector<pair<int, int>> itvIdx;
+        itvIdx.reserve(n);
         for (int i = 0; i < n; ++i) {
-            mp[intervals[i][0]] = i;
+            itvIdx.emplace_back(intervals[i][0], i);
         }
-        vector<int> res;
-        res.reserve(n);
-        for (auto &interval : intervals) {
-            // 找到第一个 start >= (该区间 end) 的区间
-            auto p = mp.lower_bound(interval[1]);
-            if (p == mp.end()) {
-                res.emplace_back(-1);
-            } else {
-                res.emplace_back(p->second);
-            }
+        sort(itvIdx.begin(), itvIdx.end());
+        vector<int> res(n, -1);
+        for (int i = 0; i < n; ++i) {
+            int idx = lower_bound(itvIdx.begin(), itvIdx.end(), make_pair(intervals[i][1], 0)) - itvIdx.begin();
+            if (idx != n) res[i] = itvIdx[idx].second;
         }
         return res;
     }
