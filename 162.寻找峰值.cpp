@@ -8,8 +8,17 @@
 class Solution {
 public:
     int findPeakElement(vector<int> &nums) {
-        // 由高中数学可知，峰值即为 极大值，而最大值一定为 极大值
-        return max_element(nums.begin(), nums.end()) - nums.begin();
+        int n = nums.size();
+        int l = 0, r = n;
+        while (l < r) {
+            int mid = l + ((r - l) >> 1);
+            if (mid != n - 1 && nums[mid] < nums[mid + 1]) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return l;
     }
 };
 // @lc code=end
