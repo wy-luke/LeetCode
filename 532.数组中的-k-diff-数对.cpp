@@ -8,20 +8,16 @@
 class Solution {
 public:
     int findPairs(vector<int> &nums, int k) {
-        // k 是定值，所以知道数对的一个数，另一个数是确定的
-        // 所以我们只找数对中较小的那个数，放入 res 中
-        unordered_set<int> visited;
-        unordered_set<int> res;
-        for (int num : nums) {
-            if (visited.count(num - k)) {
-                res.emplace(num - k);
-            }
-            if (visited.count(num + k)) {
-                res.emplace(num);
-            }
-            visited.emplace(num);
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        int j = 1, res = 0;
+        for (int i = 0; i < n; ++i) {
+            if (i != 0 && nums[i] == nums[i - 1]) continue;
+            // 对于 k=0 时，要排除搜到其本身的情况，再 ++j
+            while (j < n && nums[j] < nums[i] + k || j == i) ++j;
+            if (j < n && nums[j] == nums[i] + k) ++res;
         }
-        return res.size();
+        return res;
     }
 };
 // @lc code=end
