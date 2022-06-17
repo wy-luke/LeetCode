@@ -7,19 +7,23 @@
 // @lc code=start
 class Solution {
 public:
-    void shiftRight(vector<int> &arr, int target) {
-        int pre = 0, cur;
-        for (int i = target + 1; i < arr.size(); ++i) {
-            cur = arr[i];
-            arr[i] = pre;
-            pre = cur;
-        }
-    }
-
     void duplicateZeros(vector<int> &arr) {
-        for (int i = 0; i < arr.size(); ++i) {
-            // 每找到一个 0，向后面加一个 0，并且右移后面的所有元素，注意 i 需要 +2
-            if (arr[i] == 0) shiftRight(arr, i++);
+        int n = arr.size();
+        int i = 0, j = 0;
+        while (j < n) {
+            if (arr[i] == 0) ++j;
+            ++j;
+            ++i;
+        }
+        // 此时按题目复写 0 后，已经可以把数组填满，开始回写
+        j--;
+        i--;
+        while (i >= 0) {
+            // 避免一开始 j 仍在数组外
+            if (j < n) arr[j] = arr[i];
+            if (arr[i] == 0 && j > 0) arr[--j] = 0;
+            --j;
+            --i;
         }
     }
 };
