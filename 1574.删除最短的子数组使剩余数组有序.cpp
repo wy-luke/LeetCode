@@ -19,13 +19,10 @@ public:
         // 同时保留 左右部分 时，需要删除的长度
         int left = 0, right = j;
         while (left <= i && right <= n - 1) {
-            if (arr[left] <= arr[right]) {
-                // [0, left] 和 [right, n-1] 有序
-                res = min(res, right - left - 1);
-                ++left;
-            } else {
-                ++right;
-            }
+            right = lower_bound(arr.begin() + right, arr.end(), arr[left]) - arr.begin();
+            // [0, left] 和 [right, n-1] 有序
+            res = min(res, right - left - 1);
+            ++left;
         }
         return res;
     }
