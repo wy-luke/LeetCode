@@ -18,30 +18,54 @@
  */
 class Solution {
 public:
-    TreeNode *getBottom(TreeNode *root) {
-        while (root->left) {
-            root = root->left;
-        }
-        return root;
-    }
-
     TreeNode *deleteNode(TreeNode *root, int key) {
         if (root == nullptr) return nullptr;
-
-        if (key == root->val) {
-            if (root->right == nullptr) return root->left;
-            if (root->left == nullptr) return root->right;
-
-            getBottom(root->right)->left = root->left;
-            return root->right;
+        TreeNode *parent = nullptr;
+        TreeNode *node = root;
+        // 找到要删除的元素
+        while (node != nullptr && node->val != key) {
+            parent = node;
+            if (node->val < key) {
+                node = node->right;
+            } else {
+                node = node->left;
+            }
         }
-
-        if (key < root->val) {
-            root->left = deleteNode(root->left, key);
-        } else if (key > root->val) {
-            root->right = deleteNode(root->right, key);
+        // 要删除的元素不存在
+        if (node == nullptr) return root;
+        // 把 node 更新为删除元素后，parent 的新后继节点
+        if (node->left == nullptr && node->right == nullptr) {
+            node = nullptr;
+        } else if (node->left == nullptr) {
+            node = node->right;
+        } else if (node->right == nullptr) {
+            node = node->left;
+        } else {
+            // 如果 node 左右均 不为 nullptr
+            // 把 node->right 接在 node->left 的 右子树最底层
+            TreeNode *leftParent = node;
+            TreeNode *left = node->left;
+            TreeNode *right = node->right;
+            // 更新 node
+            node = left;
+            while (left != nullptr) {
+                leftParent = left;
+                left = left->right;
+            }
+            leftParent->right = right;
         }
-        return root;
+        // parent 为 nullptr 时，说明 root 为需要删除的元素，返回 node 即可
+        if (parent == nullptr) {
+            return node;
+        } else {
+            // 更新节点
+            if (parent->left != nullptr && parent->left->val == key) {
+                parent->left = node;
+            } else {
+                parent->right = node;
+            }
+            return root;
+        }
     }
 };
 // @lc code=end
