@@ -7,7 +7,9 @@
 // @lc code=start
 class Solution {
 public:
+    unordered_map<string, vector<int>> memo;
     vector<int> diffWaysToCompute(string expression) {
+        if (memo.count(expression)) return memo[expression];
         int n = expression.size();
         vector<int> res;
         for (int i = 0; i < n; ++i) {
@@ -27,7 +29,8 @@ public:
                 }
             }
         }
-        if (res.empty()) return {stoi(expression)};
+        if (res.empty()) res.emplace_back(stoi(expression));
+        memo[expression] = res;
         return res;
     }
 };
