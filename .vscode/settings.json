@@ -12,6 +12,7 @@
         "xiosbase": "cpp",
         "cstdlib": "cpp",
         "algorithm": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "string": "cpp"
     }
 }
