@@ -9,32 +9,18 @@ import java.util.*;
 // @lc code=start
 class Solution {
     public int busyStudent(int[] startTime, int[] endTime, int queryTime) {
-        Arrays.sort(startTime);
-        Arrays.sort(endTime);
-
-        int l = 0, r = startTime.length;
-        while (l < r) {
-            int mid = l + (r - l) / 2;
-            if (startTime[mid] <= queryTime) {
-                l = mid + 1;
-            } else {
-                r = mid;
-            }
+        int maxEnd = Arrays.stream(endTime).max().getAsInt();
+        if (queryTime > maxEnd) return 0;
+        int[] cnt = new int[maxEnd + 2];
+        for (int i = 0; i < startTime.length; ++i) {
+            cnt[startTime[i]]++;
+            cnt[endTime[i] + 1]--;
         }
-        int tmp = l;
-
-        l = 0;
-        r = endTime.length;
-        while (l < r) {
-            int mid = l + (r - l) / 2;
-            if (endTime[mid] < queryTime) {
-                l = mid + 1;
-            } else {
-                r = mid;
-            }
+        int ans = 0;
+        for (int i = 0; i <= queryTime; ++i) {
+            ans += cnt[i];
         }
-
-        return tmp - l;
+        return ans;
     }
 }
 // @lc code=end
