@@ -13,6 +13,7 @@
         "cstdlib": "cpp",
         "algorithm": "cpp",
         "limits": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "ios": "cpp"
     }
 }
