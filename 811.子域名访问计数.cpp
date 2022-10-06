@@ -13,14 +13,14 @@ public:
             int spaceIdx = cpdomain.find(" ");
             int cnt = stoi(cpdomain.substr(0, spaceIdx));
             cpdomain = cpdomain.substr(spaceIdx + 1);
-            int dot1 = cpdomain.find_first_of(".");
-            int dot2 = cpdomain.find_last_of(".");
             mp[cpdomain] += cnt;
-            if (dot1 != string::npos && dot1 != dot2) {
-                mp[cpdomain.substr(dot2 + 1)] += cnt;
-                mp[cpdomain.substr(dot1 + 1)] += cnt;
-            } else if (dot1 == dot2 && dot1 != string::npos) {
-                mp[cpdomain.substr(dot1 + 1)] += cnt;
+            int dot = cpdomain.find(".");
+            if (dot != string::npos) {
+                mp[cpdomain.substr(dot + 1)] += cnt;
+                dot = cpdomain.find(".", dot + 1);
+                if (dot != string::npos) {
+                    mp[cpdomain.substr(dot + 1)] += cnt;
+                }
             }
         }
         vector<string> ans;
